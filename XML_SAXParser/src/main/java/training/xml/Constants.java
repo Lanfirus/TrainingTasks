@@ -19,6 +19,7 @@ public interface Constants {
     String SCHEMA = "http://www.w3.org/2001/XMLSchema";
     String SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
     String CATALOG_SCHEMA = "catalog.xsd";
+    String FILE = "file:";
 
     int CASH_CONDITION = 10000;
 }

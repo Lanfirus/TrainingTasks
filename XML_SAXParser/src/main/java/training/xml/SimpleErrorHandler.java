@@ -1,7 +1,6 @@
 package training.xml;
 
 import org.xml.sax.ErrorHandler;
-import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 public class SimpleErrorHandler implements ErrorHandler {

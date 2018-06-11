@@ -1,6 +1,7 @@
 package training.xml.api;
 
 import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import training.xml.Constants;
 import training.xml.Person;
@@ -22,7 +23,7 @@ public class SAXHandler extends DefaultHandler{
     }
 
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes attributes) {
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException{
         if (qName.equalsIgnoreCase(Constants.PERSON)) {
             String id = attributes.getValue(Constants.ID);
             person = new Person();
@@ -37,14 +38,14 @@ public class SAXHandler extends DefaultHandler{
     }
 
     @Override
-    public void endElement(String uri, String localName, String qName) {
+    public void endElement(String uri, String localName, String qName) throws SAXException{
         if (qName.equalsIgnoreCase(Constants.PERSON)) {
             persons.add(person);
         }
     }
 
     @Override
-    public void characters(char ch[], int start, int length) {
+    public void characters(char ch[], int start, int length) throws SAXException{
         if (bName) {
             person.setName(new String(ch, start, length));
             bName = false;

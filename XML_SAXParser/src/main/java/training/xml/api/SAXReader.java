@@ -1,17 +1,15 @@
 package training.xml.api;
 
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 import training.xml.Constants;
 import training.xml.ExceptionMessages;
 import training.xml.Person;
+import training.xml.SimpleErrorHandler;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -24,14 +22,15 @@ public class SAXReader implements XMLReaderAPI {
     public List<Person> readDataFromXML(String fileName) {
         if (Objects.nonNull(fileName)) {
             try {
-                SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-                Schema schema = schemaFactory.newSchema(new File(Constants.CATALOG_SCHEMA));
-                saxParserFactory.setSchema(schema);
-                saxParserFactory.setValidating(false);
-                SAXParser saxParser = saxParserFactory.newSAXParser();
+                saxParserFactory.setValidating(true);
                 setHandler(new SAXHandler());
-                File file = new File(fileName);
-                saxParser.parse(new File(fileName), handler);
+                SAXParser saxParser = saxParserFactory.newSAXParser();
+                saxParser.setProperty(Constants.SCHEMA_LANGUAGE, Constants.SCHEMA);
+                saxParser.setProperty(Constants.SCHEMA_SOURCE, Constants.CATALOG_SCHEMA);
+                XMLReader xmlReader = saxParser.getXMLReader();
+                xmlReader.setContentHandler(handler);
+                xmlReader.setErrorHandler(new SimpleErrorHandler());
+                xmlReader.parse(Constants.FILE + fileName);
             }
             catch (ParserConfigurationException | SAXException | IOException e) {
                 e.printStackTrace();
@@ -46,7 +45,7 @@ public class SAXReader implements XMLReaderAPI {
         }
     }
 
-    public void setHandler(SAXHandler handler) {
+    private void setHandler(SAXHandler handler) {
         this.handler = handler;
     }
 }
