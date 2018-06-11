@@ -3,7 +3,9 @@ package training.xml.api;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import training.xml.ExceptionMessages;
 import training.xml.Person;
 import training.xml.TestConstants;
 
@@ -19,10 +21,10 @@ public class SAXReaderTest {
 
     private SAXReader saxReader = new SAXReader();
     private String fileName = TestConstants.TEST_XML_FILE;
-    private static List<Person> persons;
+    private List<Person> persons;
 
-    @BeforeAll
-    public static void createListOfPersons() throws IOException{
+    @BeforeEach
+    public void createListOfPersons() throws IOException{
         persons = new ArrayList<>();
         persons.add(new Person(1,"John", "New York, 5th ave, 45", 100500, "it"));
         persons.add(new Person(2,"Mike", "New Jersey, Clive str, 1405", 94924, "telecom"));
@@ -45,13 +47,18 @@ public class SAXReaderTest {
     }
 
     @Test
-    public void readDataFromXMLIncorrectNullInputData() throws IOException{
+    public void readDataFromXMLIncorrectNullParameters() throws IOException{
         persons.add(new Person(4,null, "New York, 5th ave, 45", 100500, "it"));
         JDOMWriter writer = new JDOMWriter();
         writer.writeXMLToFile(persons, TestConstants.TEST_XML_FILE);
-
-        assertThrows(RuntimeException.class, () -> saxReader.readDataFromXML(fileName));
-        persons.remove(3);
-        writer.writeXMLToFile(persons, TestConstants.TEST_XML_FILE);
+        String actuals = null;
+        try{
+            saxReader.readDataFromXML(fileName);
+        }
+        catch(RuntimeException e){
+            actuals = e.getMessage();
+        }
+        assertTrue(ExceptionMessages.NULL_PARAMETER.equals(actuals));
+        Files.deleteIfExists(Paths.get(TestConstants.TEST_XML_FILE));
     }
 }

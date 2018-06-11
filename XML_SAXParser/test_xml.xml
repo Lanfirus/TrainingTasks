@@ -19,5 +19,11 @@
       <cash>5300</cash>
       <education>agriculture</education>
     </person>
+    <person id="4">
+      <name />
+      <address>New York, 5th ave, 45</address>
+      <cash>100500</cash>
+      <education>it</education>
+    </person>
   </notebook>
 </catalog>

@@ -1,9 +1,8 @@
-/*
 package training.xml;
 
 import org.junit.jupiter.api.Test;
-import training.xml.api.DOMReader;
 import training.xml.api.JDOMWriter;
+import training.xml.api.SAXReader;
 
 
 import java.io.IOException;
@@ -18,7 +17,7 @@ public class ControllerTest {
 
     private Controller controller = new Controller();
     private Writer writer = mock(Writer.class);
-    private DOMReader domReader = mock(DOMReader.class);
+    private SAXReader domReader = mock(SAXReader.class);
     private JDOMWriter jdomWriter = mock(JDOMWriter.class);
     private List<Person> persons;
 
@@ -53,4 +52,3 @@ public class ControllerTest {
         verify(writer, times(1)).writeDataToConsoleAndFile(any());
     }
 }
-*/

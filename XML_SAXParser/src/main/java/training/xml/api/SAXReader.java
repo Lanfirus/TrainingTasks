@@ -2,7 +2,7 @@ package training.xml.api;
 
 import org.xml.sax.SAXException;
 import training.xml.Constants;
-import training.xml.NullInputDataException;
+import training.xml.ExceptionMessages;
 import training.xml.Person;
 
 import javax.xml.XMLConstants;
@@ -30,14 +30,19 @@ public class SAXReader implements XMLReaderAPI {
                 saxParserFactory.setValidating(false);
                 SAXParser saxParser = saxParserFactory.newSAXParser();
                 setHandler(new SAXHandler());
+                File file = new File(fileName);
                 saxParser.parse(new File(fileName), handler);
-            } catch (ParserConfigurationException | SAXException | IOException e) {
+            }
+            catch (ParserConfigurationException | SAXException | IOException e) {
                 e.printStackTrace();
+            }
+            catch (NumberFormatException e) {
+                throw new RuntimeException(ExceptionMessages.NULL_PARAMETER);
             }
             return handler.getPersons();
         }
         else {
-            throw new NullInputDataException();
+            throw new RuntimeException(ExceptionMessages.NULL_FILENAME);
         }
     }
 
