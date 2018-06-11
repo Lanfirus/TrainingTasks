@@ -1,7 +1,7 @@
 package training.xml;
 
-import training.xml.api.DOMReader;
 import training.xml.api.JDOMWriter;
+import training.xml.api.SAXReader;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,7 +17,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Controller controller = new Controller();
         controller.setXmlWriterAPI(new JDOMWriter());
-        controller.setXmlReaderAPI(new DOMReader());
+        controller.setXmlReaderAPI(new SAXReader());
         controller.setWriter(new Writer());
         List<Person> persons = controller.createListOfPersons();
         controller.createXMLFile(persons);
